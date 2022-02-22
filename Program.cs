@@ -4,13 +4,13 @@ Console.WriteLine("Hello and welcome to Jurassic World!");
 
 List<Animal> list = new List<Animal>()
 {
-    new Elephant("Betty"),
     new Giraffe("Olle"),
-    new Coyote("Gösta"),
+    new Elephant("Betty"),
     new Seal("Pelle"),
+    new Coyote("Gösta"),
     new Bear("Kalle")
 };
 
 
-Simulator simulator = new Simulator(52, 56, list);
+Simulator simulator = new Simulator(25, 30, list);
 simulator.Run();

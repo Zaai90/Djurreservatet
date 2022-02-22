@@ -3,7 +3,7 @@ internal class Simulator
 {
     public int Leaves { get; set; }
     public int Meats { get; set; }
-    public int Days { get; set; }
+    public int Days { get; set; } = 0;
 
     private List<Animal> Animals { get; set; }
 
@@ -18,7 +18,7 @@ internal class Simulator
     {
         DateTime date = DateTime.Now;
 
-        while (Leaves! > 0 && Meats! > 0)
+        while (Leaves! > 0 || Meats! > 0)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -40,7 +40,7 @@ internal class Simulator
         AnimalLoop((animal) => Console.WriteLine($"{animal.Name} the {animal.GetType()} was fed {animal.TimesFed} times."));
         Console.WriteLine();
         AnimalLoop((animal) => Console.WriteLine($"{animal.Name} the {animal.GetType()} needs to be fed in: {(animal.HungerLimit - animal.CurrentHunger) + 1} days."));
-        Console.WriteLine($"\nFood ran out after {Days - 1} days. You need to order more {(Leaves == 0 && Meats == 0 ? "of both leaves and meat" : Leaves == 0 ? "leaves" : "meat")}!");
+        Console.WriteLine($"\nFood ran out after {Days - 1} days. You need to order more {(Leaves >= 0 && Meats <= 0 ? "of both leaves and meat" : Leaves <= 0 ? "leaves" : "meat")}!");
     }
 
     private void CheckHunger(Animal animal)
@@ -58,15 +58,15 @@ internal class Simulator
         string givenfood = "";
         if (animal.EatsLeaf && animal.EatsMeat)
         {
-            if (Leaves >= Meats)
-            {
-                givenfood = "leaves";
-                Leaves--;
-            }
-            else
+            if (Leaves <= Meats)
             {
                 givenfood = "meat";
                 Meats--;
+            }
+            else
+            {
+                givenfood = "leaves";
+                Leaves--;
             }
         }
         else if (animal.EatsLeaf)
