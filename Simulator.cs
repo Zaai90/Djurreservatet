@@ -35,7 +35,7 @@ internal class Simulator
         }
 
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("\nTimes the animals was fed:");
+        Console.WriteLine("\nTimes the animals were fed:");
         Console.ResetColor();
         AnimalLoop((animal) => Console.WriteLine($"{animal.Name} the {animal.GetType()} was fed {animal.TimesFed} times."));
         Console.WriteLine();
