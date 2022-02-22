@@ -40,7 +40,7 @@ internal class Simulator
         AnimalLoop((animal) => Console.WriteLine($"{animal.Name} the {animal.GetType()} was fed {animal.TimesFed} times."));
         Console.WriteLine();
         AnimalLoop((animal) => Console.WriteLine($"{animal.Name} the {animal.GetType()} needs to be fed in: {(animal.HungerLimit - animal.CurrentHunger) + 1} days."));
-        Console.WriteLine($"\nFood ran out after {Days - 1} days. You need to order more {(Leaves == 0 ? "leaves" : "meat")}!");
+        Console.WriteLine($"\nFood ran out after {Days - 1} days. You need to order more {(Leaves == 0 && Meats == 0 ? "of both leaves and meat" : Leaves == 0 ? "leaves" : "meat")}!");
     }
 
     private void CheckHunger(Animal animal)
