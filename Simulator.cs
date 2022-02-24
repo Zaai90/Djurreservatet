@@ -5,12 +5,13 @@ public class Simulator
     public int Meats { get; set; }
     public int Days { get; set; } = 0;
 
-    public string logPath = @"logs/";
+    private const string directory = "logs/";
+    private string logPath = "";
     private List<Animal> Animals { get; set; } = new();
 
     public Simulator(int leaves, int meats)
     {
-        System.IO.Directory.CreateDirectory("logs/");
+        System.IO.Directory.CreateDirectory(directory);
         Leaves = leaves;
         Meats = meats;
     }
@@ -22,7 +23,7 @@ public class Simulator
 
     public void Run()
     {
-        logPath += $"log_{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}_{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}.txt";
+        logPath = $"{directory}log_{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}_{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}.txt";
         File.AppendAllText(logPath, $"Simulation at {DateTime.Now} - Started:");
         DateTime date = DateTime.Now;
 
@@ -53,37 +54,60 @@ public class Simulator
         if (animal.IsHungry())
         {
             File.AppendAllText(logPath, $"\n{animal.Name} the {animal.GetType()} is hungry and needs to eat!");
-            FeedAnimal(animal);
+            File.AppendAllText(logPath, FeedAnimal(animal) ? "" : $"\n{animal.Name} the {animal.GetType()} could not be fed because food was finished!");
         }
     }
-    private void FeedAnimal(Animal animal)
+    private bool FeedAnimal(Animal animal)
     {
+        bool meatFin = Meats == 0;
+        bool leafFin = Leaves == 0;
+
         string givenfood = "";
+
         if (animal.EatsLeaf && animal.EatsMeat)
         {
-            if (Leaves <= Meats)
+            if (Leaves <= Meats && !meatFin)
+            {
+                givenfood = "meat";
+                Meats--;
+            }
+            else if (!leafFin)
+            {
+                givenfood = "leaves";
+                Leaves--;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (animal.EatsLeaf)
+        {
+            if (!leafFin)
+            {
+                givenfood = "leaves";
+                Leaves--;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (animal.EatsMeat)
+        {
+            if (!meatFin)
             {
                 givenfood = "meat";
                 Meats--;
             }
             else
             {
-                givenfood = "leaves";
-                Leaves--;
+                return false;
             }
-        }
-        else if (animal.EatsLeaf)
-        {
-            givenfood = "leaves";
-            Leaves--;
-        }
-        else if (animal.EatsMeat)
-        {
-            givenfood = "meat";
-            Meats--;
         }
         File.AppendAllText(logPath, $"\n{animal.Name} was fed with some delicious {givenfood}.");
         animal.Eat();
+        return true;
     }
     private void IncreaseHunger(Animal animal)
     {
