@@ -1,16 +1,14 @@
 ﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello and welcome to Jurassic World!");
+// Console.WriteLine("Hello and welcome to Jurassic World!");
 
+Simulator simulator = new Simulator(50, 50);
+simulator.AddAnimal(new Giraffe("Olle"));
+simulator.AddAnimal(new Elephant("Betty"));
+simulator.AddAnimal(new Seal("Pelle"));
+simulator.AddAnimal(new Coyote("Gösta"));
+simulator.AddAnimal(new Bear("Kalle"));
 
-List<Animal> list = new List<Animal>()
-{
-    new Giraffe("Olle"),
-    new Elephant("Betty"),
-    new Seal("Pelle"),
-    new Coyote("Gösta"),
-    new Bear("Kalle")
-};
-
-
-Simulator simulator = new Simulator(25, 30, list);
+Console.WriteLine("Simulation is running...");
 simulator.Run();
+
+Console.WriteLine("Done!");
